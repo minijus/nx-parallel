@@ -1,0 +1,9 @@
+{
+  "generators": {
+    "init-workspace": {
+      "factory": "./src/generators/init-workspace/generator",
+      "schema": "./src/generators/init-workspace/schema.json",
+      "description": "Generates multiple apps with targets to verify parallel runs"
+    }
+  }
+}

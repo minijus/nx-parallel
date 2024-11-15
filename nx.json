@@ -42,8 +42,38 @@
           "codeCoverage": true
         }
       }
+    },
+    "@nx/js:tsc": {
+      "cache": true,
+      "dependsOn": ["^build"],
+      "inputs": ["production", "^production"]
+    },
+    "@parallel-tools/plugin:deploy": {
+      "cache": true,
+      "dependsOn": ["publish"],
+      "inputs": ["production", "^production"]
+    },
+    "@parallel-tools/plugin:publish": {
+      "cache": true,
+      "dependsOn": ["package"],
+      "inputs": ["production", "^production"]
+    },
+    "@parallel-tools/plugin:package": {
+      "cache": true,
+      "dependsOn": ["build"],
+      "inputs": ["production", "^production"]
+    },
+    "@parallel-tools/plugin:build": {
+      "cache": true,
+      "parallelism": false,
+      "dependsOn": ["^build"],
+      "inputs": ["production", "^production"]
+    },
+    "e2e-ci--**/*": {
+      "dependsOn": ["^build"]
     }
   },
+  "parallel": 3,
   "generators": {
     "@nx/angular:application": {
       "e2eTestRunner": "none",
@@ -51,5 +81,19 @@
       "style": "scss",
       "unitTestRunner": "jest"
     }
-  }
+  },
+  "plugins": [
+    {
+      "plugin": "@nx/playwright/plugin",
+      "options": {
+        "targetName": "e2e"
+      }
+    },
+    {
+      "plugin": "@nx/eslint/plugin",
+      "options": {
+        "targetName": "eslint:lint"
+      }
+    }
+  ]
 }
